@@ -118,7 +118,7 @@ public class TanqueBasico {
     }
     
     public Vector3f getCamara(){
-        
+        Vector3f camv=new Vector3f(camara.getWorldTranslation().x,0,camara.getWorldTranslation().z);
         return camara.getWorldTranslation();
     }
     

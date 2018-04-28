@@ -10,6 +10,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Quaternion;
 import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
@@ -94,9 +95,9 @@ public class Main extends SimpleApplication {
         this.cam.setLocation(cam);
         Vector3f canon=mipj.getApuntado();
         this.cam.lookAt(new Vector3f(canon.x, canon.y+2, canon.z), cam);
-      
+        //this.cam.setRotation(Quaternion.ZERO);
         
-        
+       // mipj.getNode().rotate(0, 0.01f, 0);
        
     }
 
@@ -124,7 +125,6 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("Atras", new KeyTrigger(KeyInput.KEY_S));
         inputManager.addMapping("Derecha", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Izquierda", new KeyTrigger(KeyInput.KEY_A));
-        inputManager.addMapping("Saltar", new KeyTrigger(KeyInput.KEY_SPACE));
         inputManager.addMapping("Disparar", new KeyTrigger(KeyInput.KEY_P));
 
         inputManager.addListener(analogListener, "Adelante", "Atras", "Derecha", "Izquierda", "Saltar", "Disparar");
@@ -136,24 +136,24 @@ public class Main extends SimpleApplication {
             
             float velocidadRotacion = 0.005f;
             float velocidadAvance = 0.01f;
+            
+           
+            
             if (name.equals("Adelante")) {
-                System.out.println("Estoy yendo hacia adelante");
-                mipj.getNode().move(0,0.1f,0);
+                mipj.getNode().move(0,0,velocidadAvance);
             }
             if (name.equals("Atras")) {
-                
+                mipj.getNode().move(0,0,-velocidadAvance);
             }
-            if (name.equals("Saltar")) {
-                
-            }
+            
             if (name.equals("Derecha")) {
-                
+                mipj.getNode().rotate(0,-0.01f,0);
             }
             if (name.equals("Izquierda")) {
-                
+                mipj.getNode().rotate(0, 0.01f,0);
             }
             if (name.equals("Disparar")) {
-               
+               mipj.dispara(estadosFisicos);
             }
     
         }
