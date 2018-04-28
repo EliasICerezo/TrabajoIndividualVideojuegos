@@ -52,7 +52,7 @@ public class TanqueBasico {
         Box cuerpo = new Box(1, 1, 1);
         Geometry cuerpog = new Geometry("cuerpo" + name, cuerpo);
         cuerpog.setMaterial(materialCuerpo);
-        cuerpog.move(0, 1.01f, 0);
+        cuerpog.move(0, 1.1f, 0);
 
         Material materialcanon = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         materialcanon.setColor("Color", ColorRGBA.Blue);

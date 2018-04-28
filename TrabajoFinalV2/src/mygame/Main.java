@@ -68,7 +68,7 @@ public class Main extends SimpleApplication {
         mat.setColor("Color", ColorRGBA.White);
 
         //Suelo
-        Box b = new Box(100, 0.01f, 100);
+        Box b = new Box(100, 0.1f, 100);
         Geometry suelog = new Geometry("Box", b);
         suelog.setMaterial(mat);
 
@@ -149,13 +149,9 @@ public class Main extends SimpleApplication {
         public void onAnalog(String name, float value, float tpf) {
             rootNode.setLocalTransform(mipj.getNode().getWorldTransform()); //El world del geom es World padre
             mipj.getNode().setLocalTransform(new Transform()); //Se reinicia la transf. local del geom
-            
-            
-            float velocidadRotacion = 0.005f;
+
             float velocidadAvance = 0.01f;
-            
-           
-            
+
             if (name.equals("Adelante")) {
                 mipj.getNode().move(0,0,velocidadAvance);
             }
@@ -164,10 +160,10 @@ public class Main extends SimpleApplication {
             }
             
             if (name.equals("Derecha")) {
-                mipj.getNode().rotate(0,-0.01f,0);
+                mipj.getNode().rotate(0,-0.005f,0);
             }
             if (name.equals("Izquierda")) {
-                mipj.getNode().rotate(0, 0.01f,0);
+                mipj.getNode().rotate(0, 0.005f,0);
             }
             
     
