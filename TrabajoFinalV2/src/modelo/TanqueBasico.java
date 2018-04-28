@@ -33,7 +33,8 @@ public class TanqueBasico {
     private int i = 0;//Numero de balas
     private String name; //Nombre del tanque
     private AssetManager assetManager; //AssetManager
-   
+    private Material materialcanon;
+    private Geometry cuerpog;
     
     //Necesito tener el cañon para generar las balas delante
     private Geometry canong;
@@ -50,11 +51,11 @@ public class TanqueBasico {
         materialCuerpo.setColor("Color", ColorRGBA.Red);
 
         Box cuerpo = new Box(1, 1, 1);
-        Geometry cuerpog = new Geometry("cuerpo" + name, cuerpo);
+        cuerpog = new Geometry("cuerpo" + name, cuerpo);
         cuerpog.setMaterial(materialCuerpo);
         cuerpog.move(0, 1.1f, 0);
 
-        Material materialcanon = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        materialcanon = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         materialcanon.setColor("Color", ColorRGBA.Blue);
         Cylinder canon = new Cylinder(30, 30, 0.15f, 0.75f, true);
         canong = new Geometry("canon" + name, canon);
@@ -122,5 +123,19 @@ public class TanqueBasico {
         Vector3f camv=new Vector3f(camara.getWorldTranslation().x,5,camara.getWorldTranslation().z);
         return camv;
     }
+
+    public void setMaterialCuerpo(Material materialCuerpo) {
+        this.materialCuerpo = materialCuerpo;
+        cuerpog.setMaterial(materialCuerpo);
+    }
+
+    public void setMaterialcanon(Material materialcanon) {
+        this.materialcanon = materialcanon;
+        canong.setMaterial(materialcanon);
+    }
+    
+    
+    
+    
     
 }

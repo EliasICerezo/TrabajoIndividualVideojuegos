@@ -31,11 +31,12 @@ public class Main extends SimpleApplication {
     private BulletAppState estadosFisicos;
     private RigidBodyControl fisicaSuelo;
     private Node world;
+    private Node enemigosNode;
+    private Node mipersonaje;
     //Mi personaje
     private TanqueBasico mipj;
     
-    //tiempos
-    private float tiempodisparo=0;
+    
     
     
     public static void main(String[] args) {
@@ -51,6 +52,8 @@ public class Main extends SimpleApplication {
     public void simpleInitApp() {
         inicTeclado();
         world=new Node();
+        mipersonaje=new Node();
+        enemigosNode=new Node();
         //pongo el cielo
         viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
         //asocio las fisicas al mapa 
@@ -66,13 +69,18 @@ public class Main extends SimpleApplication {
         //Materials
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         mat.setColor("Color", ColorRGBA.White);
-
+        Material verde = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        verde.setColor("Color", ColorRGBA.Green);
+        Material negro = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        negro.setColor("Color", ColorRGBA.Black);
+        
+        
         //Suelo
         Box b = new Box(100, 0.1f, 100);
         Geometry suelog = new Geometry("Box", b);
         suelog.setMaterial(mat);
 
-        //Fisicas
+        //Fisicas del suelo
         fisicaSuelo = new RigidBodyControl(0f); //creación la fisicaSuelo con masa 0
         suelog.addControl(fisicaSuelo); //asociación geometry y física de suelo
         estadosFisicos.getPhysicsSpace().add(fisicaSuelo); //integración de fisicaSuelo en entorno físico
@@ -82,27 +90,38 @@ public class Main extends SimpleApplication {
         mipj = new TanqueBasico("Tanque1", assetManager);
         
         
+        //Primer enemigo
+        TanqueBasico e1=new TanqueBasico("Enemigo1",assetManager);
+        
+        e1.setMaterialCuerpo(verde);
+        e1.setMaterialcanon(negro);
         
         
-        world.attachChild(mipj.getNode());
+        enemigosNode.attachChild(e1.getNode());
+        
+        mipersonaje.attachChild(mipj.getNode());
         world.attachChild(suelog);
+        
+        rootNode.attachChild(mipersonaje);
         rootNode.attachChild(world);
+        rootNode.attachChild(enemigosNode);
         
     }
 
     @Override
     public void simpleUpdate(float tpf) {
-        tiempodisparo+=tpf;
         
         
-        //this.cam.setRotation(Quaternion.ZERO);
         
-       // mipj.getNode().rotate(0, 0.01f, 0);
        
+        actualizacamara();
+       
+    }
+
+    private void actualizacamara() {
         cam.setLocation(mipj.getCamara());
         Vector3f canon=mipj.getApuntado();
         this.cam.lookAt(new Vector3f(canon.x, canon.y+2, canon.z), Vector3f.UNIT_Y);
-       
     }
 
     @Override
@@ -147,7 +166,7 @@ public class Main extends SimpleApplication {
     private AnalogListener analogListener = new AnalogListener() {
         @Override
         public void onAnalog(String name, float value, float tpf) {
-            rootNode.setLocalTransform(mipj.getNode().getWorldTransform()); //El world del geom es World padre
+            mipersonaje.setLocalTransform(mipj.getNode().getWorldTransform()); //El world del geom es World padre
             mipj.getNode().setLocalTransform(new Transform()); //Se reinicia la transf. local del geom
 
             float velocidadAvance = 0.01f;
