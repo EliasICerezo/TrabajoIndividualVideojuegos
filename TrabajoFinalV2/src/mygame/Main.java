@@ -10,6 +10,7 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Transform;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
@@ -46,6 +47,7 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        inicTeclado();
         //pongo el cielo
         viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
         //asocio las fisicas al mapa 
@@ -72,9 +74,10 @@ public class Main extends SimpleApplication {
         suelog.addControl(fisicaSuelo); //asociación geometry y física de suelo
         estadosFisicos.getPhysicsSpace().add(fisicaSuelo); //integración de fisicaSuelo en entorno físico
         fisicaSuelo.setRestitution(0.9f); //darndo rebote a fisicaSuelo} 
+        
         //Mi tanque
         mipj = new TanqueBasico("Tanque1", assetManager);
-
+        
         
         
         
@@ -87,14 +90,14 @@ public class Main extends SimpleApplication {
     public void simpleUpdate(float tpf) {
         tiempodisparo+=tpf;
         
-        Vector3f cam=mipj.getNode().getWorldTranslation();
-        this.cam.setLocation(mipj.getNode().getWorldTranslation());
+        Vector3f cam=mipj.getCamara();
+        this.cam.setLocation(cam);
         Vector3f canon=mipj.getApuntado();
         this.cam.lookAt(new Vector3f(canon.x, canon.y+2, canon.z), cam);
       
         
         
-        mipj.getNode().rotate(0, 0.001f, 0);
+       
     }
 
     @Override
@@ -130,8 +133,12 @@ public class Main extends SimpleApplication {
     private AnalogListener analogListener = new AnalogListener() {
         @Override
         public void onAnalog(String name, float value, float tpf) {
+            
+            float velocidadRotacion = 0.005f;
+            float velocidadAvance = 0.01f;
             if (name.equals("Adelante")) {
-                
+                System.out.println("Estoy yendo hacia adelante");
+                mipj.getNode().move(0,0.1f,0);
             }
             if (name.equals("Atras")) {
                 

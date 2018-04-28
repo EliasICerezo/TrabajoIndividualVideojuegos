@@ -63,7 +63,7 @@ public class TanqueBasico {
         //poniendo la camara detras del tanque
         
         camara=new Node();
-        camara.move(0, 2, 5);
+        camara.move(0, 4, -7.5f);
         tanque.attachChild(camara);
         
 
@@ -81,7 +81,7 @@ public class TanqueBasico {
 
         Sphere bala = new Sphere(30, 30, 0.15f, true, true);
         Geometry balag = new Geometry("bala " + name + " " + i, bala);
-        balag.move(canong.getWorldTranslation()); // (canong.getWorldTranslation().x+0.5f, canong.getWorldTranslation().y, canong.getWorldTranslation().z + 0.7f);
+        balag.move(canong.getWorldTranslation()); 
         balag.setMaterial(materialbala);
         balasGeometry.add(balag);
         
@@ -90,6 +90,7 @@ public class TanqueBasico {
         balag.addControl(fisicaBalas);
         estadosFisicos.getPhysicsSpace().add(fisicaBalas);
         fisicaBalas.setRestitution(0.9f);
+        
         //Le añado el control
         ControlBala cb=new ControlBala(balag, tanque);
         balag.addControl(cb);
@@ -101,10 +102,7 @@ public class TanqueBasico {
         
         
         fisicaBalas.applyImpulse(direccion,Vector3f.ZERO);
-        
-        
         rigidbalas.add(fisicaBalas);
-        
         tanque.attachChild(balag);
         i++;
         
@@ -121,6 +119,7 @@ public class TanqueBasico {
     
     public Vector3f getCamara(){
         
+        return camara.getWorldTranslation();
     }
     
    
