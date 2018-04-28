@@ -5,6 +5,7 @@ import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.light.DirectionalLight;
@@ -29,7 +30,7 @@ public class Main extends SimpleApplication {
 
     private BulletAppState estadosFisicos;
     private RigidBodyControl fisicaSuelo;
-
+    private Node world;
     //Mi personaje
     private TanqueBasico mipj;
     
@@ -49,6 +50,7 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         inicTeclado();
+        world=new Node();
         //pongo el cielo
         viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
         //asocio las fisicas al mapa 
@@ -82,22 +84,24 @@ public class Main extends SimpleApplication {
         
         
         
+        world.attachChild(mipj.getNode());
+        world.attachChild(suelog);
+        rootNode.attachChild(world);
         
-        rootNode.attachChild(mipj.getNode());
-        rootNode.attachChild(suelog);
     }
 
     @Override
     public void simpleUpdate(float tpf) {
         tiempodisparo+=tpf;
         
-        Vector3f cam=mipj.getCamara();
-        this.cam.setLocation(cam);
-        Vector3f canon=mipj.getApuntado();
-        this.cam.lookAt(new Vector3f(canon.x, canon.y+2, canon.z), cam);
+        
         //this.cam.setRotation(Quaternion.ZERO);
         
        // mipj.getNode().rotate(0, 0.01f, 0);
+       
+        cam.setLocation(mipj.getCamara());
+        Vector3f canon=mipj.getApuntado();
+        this.cam.lookAt(new Vector3f(canon.x, canon.y+2, canon.z), Vector3f.UNIT_Y);
        
     }
 
@@ -126,13 +130,26 @@ public class Main extends SimpleApplication {
         inputManager.addMapping("Derecha", new KeyTrigger(KeyInput.KEY_D));
         inputManager.addMapping("Izquierda", new KeyTrigger(KeyInput.KEY_A));
         inputManager.addMapping("Disparar", new KeyTrigger(KeyInput.KEY_P));
-
-        inputManager.addListener(analogListener, "Adelante", "Atras", "Derecha", "Izquierda", "Saltar", "Disparar");
+        inputManager.addListener(actionListener, "Disparar");
+        inputManager.addListener(analogListener, "Adelante", "Atras", "Derecha", "Izquierda", "Saltar");
     }
+    
+    private ActionListener actionListener = new ActionListener() {
+        @Override
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if (name.equals("Disparar") && isPressed ) {
+               mipj.dispara(estadosFisicos);
+            }
+        }
+    };
+    
     
     private AnalogListener analogListener = new AnalogListener() {
         @Override
         public void onAnalog(String name, float value, float tpf) {
+            rootNode.setLocalTransform(mipj.getNode().getWorldTransform()); //El world del geom es World padre
+            mipj.getNode().setLocalTransform(new Transform()); //Se reinicia la transf. local del geom
+            
             
             float velocidadRotacion = 0.005f;
             float velocidadAvance = 0.01f;
@@ -152,9 +169,7 @@ public class Main extends SimpleApplication {
             if (name.equals("Izquierda")) {
                 mipj.getNode().rotate(0, 0.01f,0);
             }
-            if (name.equals("Disparar")) {
-               mipj.dispara(estadosFisicos);
-            }
+            
     
         }
     };

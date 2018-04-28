@@ -11,6 +11,7 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
@@ -66,7 +67,7 @@ public class TanqueBasico {
         camara.move(0, 4, -7.5f);
         tanque.attachChild(camara);
         
-
+        
         tanque.attachChild(canong);
         tanque.attachChild(cuerpog);
     }
@@ -97,7 +98,7 @@ public class TanqueBasico {
         
        
         
-        Vector3f direccion= tanque.getWorldRotation().getRotationColumn(2).normalize().mult(new Vector3f(25, 0, 25)); //new Vector3f(componente.x, 0, componente.z);
+        Vector3f direccion= tanque.getWorldRotation().getRotationColumn(2).normalize().mult(new Vector3f(50, 5, 50)); //new Vector3f(componente.x, 0, componente.z);
         
         
         
@@ -118,10 +119,8 @@ public class TanqueBasico {
     }
     
     public Vector3f getCamara(){
-        Vector3f camv=new Vector3f(camara.getWorldTranslation().x,0,camara.getWorldTranslation().z);
-        return camara.getWorldTranslation();
+        Vector3f camv=new Vector3f(camara.getWorldTranslation().x,5,camara.getWorldTranslation().z);
+        return camv;
     }
     
-   
-
 }
