@@ -37,7 +37,7 @@ public class ControlTanquePerseguidor extends ControlTorreta{
                 
                 perseguir(tpf);
                 
-                if(next.getDistance()<5){
+                if(next.getDistance()<10){
                     permiso=true;
                 }
                 
@@ -47,6 +47,12 @@ public class ControlTanquePerseguidor extends ControlTorreta{
                 }
         
             }
+    }
+
+    private void perseguir(float tpf) {
+        Vector3f direccion= tanquejugador.getWorldTranslation().subtract(mitanque.getNode().getWorldTranslation());
+        
+        mitanque.getNode().move(direccion.mult(0.1f*tpf));
     }
     
 }
