@@ -27,7 +27,7 @@ import java.util.ArrayList;
  *
  * @author elias
  */
-public class TanqueBasico  implements Tanque {
+public class Torreta  implements Tanque {
 
     private Node tanque,camara;//El nodo donde esta todo
     private Material materialCuerpo;
@@ -46,7 +46,7 @@ public class TanqueBasico  implements Tanque {
     //Necesito tener el cañon para generar las balas delante
     private Geometry canong;
 
-    public TanqueBasico(String name, AssetManager assetManager, Node padre)  {
+    public Torreta(String name, AssetManager assetManager, Node padre)  {
         tanque = new Node();
         rigidbalas = new ArrayList<>();
         balasGeometry = new ArrayList<>();

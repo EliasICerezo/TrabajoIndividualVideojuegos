@@ -24,7 +24,7 @@ import control.ControlTorreta;
 import java.util.ArrayList;
 import java.util.Iterator;
 import modelo.Tanque;
-import modelo.TanqueBasico;
+import modelo.Torreta;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -40,10 +40,10 @@ public class Main extends SimpleApplication {
     private Node enemigosNode;
     private Node mipersonaje;
     //Mi personaje
-    private TanqueBasico mipj;
+    private Torreta mipj;
     //Primer enemigo
     private ArrayList<Tanque> enemigos;
-    private TanqueBasico e1;
+    private Torreta e1;
     
     
     public static void main(String[] args) {
@@ -95,11 +95,11 @@ public class Main extends SimpleApplication {
         fisicaSuelo.setRestitution(0.9f); //darndo rebote a fisicaSuelo} 
         
         //Mi tanque
-        mipj = new TanqueBasico("Tanque1", assetManager,mipersonaje);
+        mipj = new Torreta("Tanque1", assetManager,mipersonaje);
         
         
         //Primer enemigo
-        e1=new TanqueBasico("Enemigo1",assetManager,enemigosNode);
+        e1=new Torreta("Enemigo1",assetManager,enemigosNode);
         e1.getNode().move(0,0,-10);
         ControlTorreta controlTorreta=new ControlTorreta(mipj.getNode(), e1);
         controlTorreta.setEstadosFisicos(estadosFisicos);
