@@ -23,12 +23,12 @@ import modelo.Tanque;
  * @author elias
  */
 public class ControlTorreta extends AbstractControl{
-    private Node tanquejugador;
-    private Tanque mitanque;
-    private BulletAppState estadosFisicos;
+    protected Node tanquejugador;
+    protected Tanque mitanque;
+    protected BulletAppState estadosFisicos;
     
     //Tiempos de disparo
-    private float tiempodisparo=0;
+    protected float tiempodisparo=0;
     
     
     public ControlTorreta(Node tanquejugador, Tanque mitanque) {
@@ -63,7 +63,7 @@ public class ControlTorreta extends AbstractControl{
         
     }
     
-    private CollisionResults lanzarayos(){
+    protected CollisionResults lanzarayos(){
         CollisionResults results = new CollisionResults();
         Geometry cuerpo=mitanque.getCuerpo();
         
@@ -99,7 +99,37 @@ public class ControlTorreta extends AbstractControl{
         Ray rayo8=new Ray(posicion, new Vector3f(10, 0, 10));
         tanquejugador.collideWith(rayo8, results);
         
+        posicion= new Vector3f(cuerpo.getWorldTranslation().x+1, cuerpo.getWorldTranslation().y, cuerpo.getWorldTranslation().z+2);
+        Ray rayo9=new Ray(posicion, new Vector3f(5, 0, 10));
+        tanquejugador.collideWith(rayo9, results);
         
+        posicion= new Vector3f(cuerpo.getWorldTranslation().x+2, cuerpo.getWorldTranslation().y, cuerpo.getWorldTranslation().z+1);
+        Ray rayo10=new Ray(posicion, new Vector3f(10, 0, 5));
+        tanquejugador.collideWith(rayo10, results);
+        
+        posicion= new Vector3f(cuerpo.getWorldTranslation().x+2, cuerpo.getWorldTranslation().y, cuerpo.getWorldTranslation().z-1);
+        Ray rayo11=new Ray(posicion, new Vector3f(10, 0, -5));
+        tanquejugador.collideWith(rayo11, results);
+        
+        posicion= new Vector3f(cuerpo.getWorldTranslation().x+1, cuerpo.getWorldTranslation().y, cuerpo.getWorldTranslation().z-2);
+        Ray rayo12=new Ray(posicion, new Vector3f(5, 0, -10));
+        tanquejugador.collideWith(rayo12, results);
+        
+        posicion= new Vector3f(cuerpo.getWorldTranslation().x-1, cuerpo.getWorldTranslation().y, cuerpo.getWorldTranslation().z-2);
+        Ray rayo13=new Ray(posicion, new Vector3f(-5, 0, -10));
+        tanquejugador.collideWith(rayo13, results);
+        
+        posicion= new Vector3f(cuerpo.getWorldTranslation().x-2, cuerpo.getWorldTranslation().y, cuerpo.getWorldTranslation().z-1);
+        Ray rayo14=new Ray(posicion, new Vector3f(-10, 0, -5));
+        tanquejugador.collideWith(rayo14, results);
+        
+        posicion= new Vector3f(cuerpo.getWorldTranslation().x-2, cuerpo.getWorldTranslation().y, cuerpo.getWorldTranslation().z+1);
+        Ray rayo15=new Ray(posicion, new Vector3f(-10, 0, 5));
+        tanquejugador.collideWith(rayo15, results);
+        
+        posicion= new Vector3f(cuerpo.getWorldTranslation().x-2, cuerpo.getWorldTranslation().y, cuerpo.getWorldTranslation().z+1);
+        Ray rayo16=new Ray(posicion, new Vector3f(-5, 0, 10));
+        tanquejugador.collideWith(rayo16, results);
         
         return results;
         

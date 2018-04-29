@@ -1,0 +1,12 @@
+Comentarios del trabajo a medida que he ido desarrollando para que no se me olviden
+
+-Torretas
+Las torretas tienen un sistema que lanza 16 rayos alrededor suya y si me detectan
+me apuntan y me disparan.
+Es la inteligencia artificial mas simple que he hecho
+(Disparan cada 1 s )
+
+-Tanques Perseguidores
+Los tanques Perseguidores tambien lanzan rayos en 16 direcciones del espacio
+si me detectan avanzan hacia la ultima posicion donde me han visto, acercandose
+y teniendo mas posibilidades de darme (Disparan cada 2.5 s )

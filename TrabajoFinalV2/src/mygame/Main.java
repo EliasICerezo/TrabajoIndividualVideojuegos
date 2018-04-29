@@ -20,11 +20,12 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
+import control.ControlTanquePerseguidor;
 import control.ControlTorreta;
 import java.util.ArrayList;
 import java.util.Iterator;
 import modelo.Tanque;
-import modelo.Torreta;
+import modelo.TanqueSinComportamiento;
 
 /**
  * This is the Main Class of your Game. You should only do initialization here.
@@ -40,10 +41,10 @@ public class Main extends SimpleApplication {
     private Node enemigosNode;
     private Node mipersonaje;
     //Mi personaje
-    private Torreta mipj;
+    private TanqueSinComportamiento mipj;
     //Primer enemigo
     private ArrayList<Tanque> enemigos;
-    private Torreta e1;
+    private TanqueSinComportamiento e1,e2;
     
     
     public static void main(String[] args) {
@@ -81,10 +82,11 @@ public class Main extends SimpleApplication {
         verde.setColor("Color", ColorRGBA.Green);
         Material negro = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         negro.setColor("Color", ColorRGBA.Black);
-        
+        Material amarillo = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        amarillo.setColor("Color", ColorRGBA.Yellow);
         
         //Suelo
-        Box b = new Box(100, 0.1f, 100);
+        Box b = new Box(10000, 0.1f, 10000);
         Geometry suelog = new Geometry("Box", b);
         suelog.setMaterial(mat);
 
@@ -95,22 +97,43 @@ public class Main extends SimpleApplication {
         fisicaSuelo.setRestitution(0.9f); //darndo rebote a fisicaSuelo} 
         
         //Mi tanque
-        mipj = new Torreta("Tanque1", assetManager,mipersonaje);
+        mipj = new TanqueSinComportamiento("Tanque1", assetManager,mipersonaje);
         
         
         //Primer enemigo
-        e1=new Torreta("Enemigo1",assetManager,enemigosNode);
-        e1.getNode().move(0,0,-10);
+        e1=new TanqueSinComportamiento("Torreta",assetManager,enemigosNode);
+        e1.getNode().move(0,0,-40);
+        //Asignamos el control correspondiente a este enemigo
         ControlTorreta controlTorreta=new ControlTorreta(mipj.getNode(), e1);
         controlTorreta.setEstadosFisicos(estadosFisicos);
         e1.addControl(controlTorreta);
-        
+        //Lo pintamos de otro color
         e1.setMaterialCuerpo(verde);
         e1.setMaterialcanon(negro);
-        
-        
+        //Lo añadimos a las estructuras correspondientes
         enemigosNode.attachChild(e1.getNode());
         enemigos.add(e1);
+        
+        
+        //SegundoEnemigo en este caso va a ser un tanque que nos va a perseguir y cuando se acerque nos disparara
+        e2=new TanqueSinComportamiento("TanquePerseguidor", assetManager, enemigosNode);
+        e2.getNode().move(40, 0, 40);
+        //Aqui ira el control
+        ControlTanquePerseguidor perseguidor=new ControlTanquePerseguidor(mipj.getNode(), e2);
+        perseguidor.setEstadosFisicos(estadosFisicos);
+        e2.addControl(perseguidor);
+        //Lo pintamos en otro color
+        e2.setMaterialCuerpo(amarillo);
+        e2.setMaterialcanon(negro);
+        //Lo añadimos a las estructuras correspondientes
+        enemigosNode.attachChild(e2.getNode());
+        enemigos.add(e2);
+       
+        
+        
+        
+        
+        
         
         
         mipersonaje.attachChild(mipj.getNode());
@@ -122,16 +145,15 @@ public class Main extends SimpleApplication {
         mipj.setEnemigos(enemigosNode);
         mipj.setListaEnemigos(enemigos);
     }
-
+    
+    /**
+     * 
+     * @param tpf 
+     */
     @Override
     public void simpleUpdate(float tpf) {
-        
-        
-        
-       
         actualizacamara();
         
-       
     }
     
     private void actualizacamara() {
@@ -195,10 +217,10 @@ public class Main extends SimpleApplication {
             }
             
             if (name.equals("Derecha")) {
-                mipj.getNode().rotate(0,-0.005f,0);
+                mipj.getNode().rotate(0,-5*tpf,0);
             }
             if (name.equals("Izquierda")) {
-                mipj.getNode().rotate(0, 0.005f,0);
+                mipj.getNode().rotate(0, 5*tpf,0);
             }
             
     

@@ -16,7 +16,7 @@ import com.jme3.scene.control.AbstractControl;
 import java.util.ArrayList;
 import java.util.Iterator;
 import modelo.Tanque;
-import modelo.Torreta;
+import modelo.TanqueSinComportamiento;
 
 /**
  *

@@ -27,11 +27,10 @@ import java.util.ArrayList;
  *
  * @author elias
  */
-public class Torreta  implements Tanque {
+public class TanqueSinComportamiento implements Tanque {
 
-    private Node tanque,camara;//El nodo donde esta todo
+    private Node tanque, camara;//El nodo donde esta todo
     private Material materialCuerpo;
-    private ArrayList<RigidBodyControl> rigidbalas; //El array de los rigeid body de las balas
     private ArrayList<Geometry> balasGeometry; //Array de las geometry de las balas
     private int i = 0;//Numero de balas
     private String name; //Nombre del tanque
@@ -41,20 +40,26 @@ public class Torreta  implements Tanque {
     private Node enemigosNode;
     private ArrayList<Tanque> listaEnemigos;
     private Node miPadre; //Darth Vader
-    
-    
+
     //Necesito tener el cañon para generar las balas delante
     private Geometry canong;
 
-    public Torreta(String name, AssetManager assetManager, Node padre)  {
+    /**
+     * Con este constructor generamos un tanque compuesto por un box a modo de cuerpo y un cilindro a modo de cañon, no lleva comportamiento asociado
+     * y tiene todos los metodos que se necesitan para hacer que el tanque funcione
+     * @param name Nombre del tanque (esto nos sirve para identificar por ejemplo de que tanque vienen las balas)
+     * @param assetManager El assetManager es necesario para cargar materiales asi que se le pasa desde el main
+     * @param padre El nodo padre del tanque, esto es necesario cuando queremos borrar el tanque por ejemplo
+     */
+    public TanqueSinComportamiento(String name, AssetManager assetManager, Node padre) {
         tanque = new Node();
-        rigidbalas = new ArrayList<>();
+        
         balasGeometry = new ArrayList<>();
         this.name = name;
         this.assetManager = assetManager;
-        this.miPadre=padre;
+        this.miPadre = padre;
         //inicializo la lista de enemigos como una lista vacia
-        listaEnemigos=new ArrayList<>();
+        listaEnemigos = new ArrayList<>();
 
         materialCuerpo = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         materialCuerpo.setColor("Color", ColorRGBA.Red);
@@ -70,18 +75,15 @@ public class Torreta  implements Tanque {
         canong = new Geometry("canon" + name, canon);
         canong.setMaterial(materialcanon);
         canong.move(0, 2f, 1);
-        
+
         //poniendo la camara detras del tanque
-        
-        camara=new Node();
+        camara = new Node();
         camara.move(0, 4, -7.5f);
         tanque.attachChild(camara);
-        
-        
+
         tanque.attachChild(canong);
         tanque.attachChild(cuerpog);
-        
-        
+
         //generaCubosparaRayos();
     }
 
@@ -95,55 +97,46 @@ public class Torreta  implements Tanque {
         Material materialbala = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         materialbala.setColor("Color", ColorRGBA.Black);
 
-        BoundingSphere esferabound=new BoundingSphere();
-        
-        
+        BoundingSphere esferabound = new BoundingSphere();
+
         Sphere bala = new Sphere(30, 30, 0.15f, true, true);
         bala.setBound(esferabound);
         bala.updateBound();
         Geometry balag = new Geometry("bala " + name + " " + i, bala);
-        balag.move(canong.getWorldTranslation()); 
+        balag.move(canong.getWorldTranslation());
         balag.setMaterial(materialbala);
         balasGeometry.add(balag);
         esferabound.setCenter(balag.getWorldTranslation());
-        
+
         //Fisicas
         RigidBodyControl fisicaBalas = new RigidBodyControl(1);
         balag.addControl(fisicaBalas);
         estadosFisicos.getPhysicsSpace().add(fisicaBalas);
         fisicaBalas.setRestitution(0.9f);
-        
+
         //Le añado el control
-        ControlBala cb=new ControlBala(balag, tanque,enemigosNode,esferabound,listaEnemigos);
+        ControlBala cb = new ControlBala(balag, tanque, enemigosNode, esferabound, listaEnemigos);
         balag.addControl(cb);
-        
 
+        Vector3f direccion = tanque.getWorldRotation().getRotationColumn(2).normalize().mult(new Vector3f(50, 5, 50)); //new Vector3f(componente.x, 0, componente.z);
 
+        fisicaBalas.applyImpulse(direccion, Vector3f.ZERO);
         
-        Vector3f direccion= tanque.getWorldRotation().getRotationColumn(2).normalize().mult(new Vector3f(50, 5, 50)); //new Vector3f(componente.x, 0, componente.z);
-        
-        
-        
-        fisicaBalas.applyImpulse(direccion,Vector3f.ZERO);
-        rigidbalas.add(fisicaBalas);
         tanque.attachChild(balag);
         i++;
-        
+
     }
+
     
-    public void addRigidBala(RigidBodyControl bala){
-        rigidbalas.add(bala);
-    }
-    
-    
+
     @Override
-    public Vector3f getApuntado(){
+    public Vector3f getApuntado() {
         return tanque.getWorldTranslation();
     }
-    
+
     @Override
-    public Vector3f getCamara(){
-        Vector3f camv=new Vector3f(camara.getWorldTranslation().x,5,camara.getWorldTranslation().z);
+    public Vector3f getCamara() {
+        Vector3f camv = new Vector3f(camara.getWorldTranslation().x, 5, camara.getWorldTranslation().z);
         return camv;
     }
 
@@ -158,111 +151,104 @@ public class Torreta  implements Tanque {
         this.materialcanon = materialcanon;
         canong.setMaterial(materialcanon);
     }
-    
-    
+
     @Override
-    public ArrayList<Geometry> getGeomBalas(){
+    public ArrayList<Geometry> getGeomBalas() {
         return balasGeometry;
     }
-    
+
     @Override
-    public void eliminaTanque(Geometry g){
-        if(g.equals(cuerpog)){
+    public void eliminaTanque(Geometry g) {
+        if (g.equals(cuerpog)) {
             miPadre.detachChild(tanque);
-            
-            
+
         }
 
     }
-    
+
     @Override
-    public void setEnemigos(Node e){
-        enemigosNode=e;
+    public void setEnemigos(Node e) {
+        enemigosNode = e;
     }
-    
+
     @Override
-    public void setListaEnemigos(ArrayList<Tanque> list){
-        listaEnemigos=list;
+    public void setListaEnemigos(ArrayList<Tanque> list) {
+        listaEnemigos = list;
     }
-    
-    private void generaCubosparaRayos(){
-        Material materialrayos=new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+
+    private void generaCubosparaRayos() {
+        Material materialrayos = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         materialrayos.setColor("Color", ColorRGBA.BlackNoAlpha);
-        
-        Box b1=new Box(0.1f,0.1f,0.1f);
-        Box b2=new Box(0.1f,0.1f,0.1f);
-        Box b3=new Box(0.1f,0.1f,0.1f);
-        Box b4=new Box(0.1f,0.1f,0.1f);
-        Box b5=new Box(0.1f,0.1f,0.1f);
-        Box b6=new Box(0.1f,0.1f,0.1f);
-        Box b7=new Box(0.1f,0.1f,0.1f);
-        Box b8=new Box(0.1f,0.1f,0.1f);
-        
-        ArrayList<Geometry> geometrias=new ArrayList<>();
-        
-        Geometry g=new Geometry("r1", b1);
+
+        Box b1 = new Box(0.1f, 0.1f, 0.1f);
+        Box b2 = new Box(0.1f, 0.1f, 0.1f);
+        Box b3 = new Box(0.1f, 0.1f, 0.1f);
+        Box b4 = new Box(0.1f, 0.1f, 0.1f);
+        Box b5 = new Box(0.1f, 0.1f, 0.1f);
+        Box b6 = new Box(0.1f, 0.1f, 0.1f);
+        Box b7 = new Box(0.1f, 0.1f, 0.1f);
+        Box b8 = new Box(0.1f, 0.1f, 0.1f);
+
+        ArrayList<Geometry> geometrias = new ArrayList<>();
+
+        Geometry g = new Geometry("r1", b1);
         g.setMaterial(materialrayos);
         g.move(2, 1, 0);
         geometrias.add(g);
-        
-        g=new Geometry("r2",b2);
+
+        g = new Geometry("r2", b2);
         g.setMaterial(materialrayos);
         g.move(0, 1, 2);
         geometrias.add(g);
-        
-        g=new Geometry("r3",b3);
+
+        g = new Geometry("r3", b3);
         g.setMaterial(materialrayos);
         g.move(0, 1, -2);
         geometrias.add(g);
-        
-        g=new Geometry("r4",b4);
+
+        g = new Geometry("r4", b4);
         g.setMaterial(materialrayos);
         g.move(-2, 1, 0);
         geometrias.add(g);
-        
-        g=new Geometry("r5",b5);
+
+        g = new Geometry("r5", b5);
         g.setMaterial(materialrayos);
         g.move(2, 1, 2);
         geometrias.add(g);
-        
-        g=new Geometry("r6",b6);
+
+        g = new Geometry("r6", b6);
         g.setMaterial(materialrayos);
         g.move(2, 1, -2);
         geometrias.add(g);
-        
-        g=new Geometry("r7",b7);
+
+        g = new Geometry("r7", b7);
         g.setMaterial(materialrayos);
         g.move(-2, 1, 2);
         geometrias.add(g);
-        
-        g=new Geometry("r8",b8);
+
+        g = new Geometry("r8", b8);
         g.setMaterial(materialrayos);
         g.move(-2, 1, -2);
         geometrias.add(g);
-        
-        for(Geometry gf: geometrias){
+
+        for (Geometry gf : geometrias) {
             tanque.attachChild(gf);
         }
-        
+
     }
 
     @Override
     public void addControl(AbstractControl control) {
         tanque.addControl(control);
     }
-    
+
     @Override
-    public Geometry getCuerpo(){
+    public Geometry getCuerpo() {
         return cuerpog;
     }
-    
-    public void setApuntado(Vector3f apuntado){
-        
+
+    public void setApuntado(Vector3f apuntado) {
+
     }
-            
-    
-    
-    
-    
-    
+
 }
