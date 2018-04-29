@@ -17,7 +17,7 @@ import modelo.Tanque;
  * @author elias
  */
 public class ControlTanqueEvasivo extends ControlTorreta{
-    private boolean permiso=false;
+    
     public ControlTanqueEvasivo(Node tanquejugador, Tanque mitanque) {
         super(tanquejugador, mitanque);
     }
@@ -32,18 +32,22 @@ public class ControlTanqueEvasivo extends ControlTorreta{
                 CollisionResult next=iter.next();
                 Vector3f direccion = new Vector3f(next.getGeometry().getWorldTranslation().x, 0, next.getGeometry().getWorldTranslation().z);
                 mitanque.getNode().lookAt(direccion, Vector3f.UNIT_Y);
-                mitanque.getNode().move(direccion.mult(0.01f));
+                cuerdahuida(tpf);
+               
                 
-                if(next.getDistance()<5){
-                    permiso=true;
-                }
                 
-                if(tiempodisparo>2.5 && permiso){
+                if(tiempodisparo>2){
                     mitanque.dispara(estadosFisicos);
                     tiempodisparo=0;
                 }
         
             }
+    }
+
+    private void cuerdahuida(float tpf) {
+        Vector3f direccion= mitanque.getNode().getWorldTranslation().subtract(tanquejugador.getWorldTranslation());
+        
+        mitanque.getNode().move(direccion.mult(0.1f*tpf));
     }
     
 }

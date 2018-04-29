@@ -10,3 +10,9 @@ Es la inteligencia artificial mas simple que he hecho
 Los tanques Perseguidores tambien lanzan rayos en 16 direcciones del espacio
 si me detectan avanzan hacia la ultima posicion donde me han visto, acercandose
 y teniendo mas posibilidades de darme (Disparan cada 2.5 s )
+
+-Tanques evasivos
+Siguen el mismo principio que los Perseguidores pero al contrario, ellos te
+rehuyen, tanto a ti como a las balas que lleguen a detectar los rayos
+(no detectan todas las balas ya que estas tienen fisicas y los rayos se lanzan
+a un metro del suelo).

@@ -20,6 +20,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
+import control.ControlTanqueEvasivo;
 import control.ControlTanquePerseguidor;
 import control.ControlTorreta;
 import java.util.ArrayList;
@@ -129,7 +130,19 @@ public class Main extends SimpleApplication {
         enemigosNode.attachChild(e2.getNode());
         enemigos.add(e2);
        
-        
+        //SegundoEnemigo en este caso va a ser un tanque que nos va a perseguir y cuando se acerque nos disparara
+        e2=new TanqueSinComportamiento("TanquePerseguidor", assetManager, enemigosNode);
+        e2.getNode().move(-40, 0, 40);
+        //Aqui ira el control
+        ControlTanqueEvasivo evasivo=new ControlTanqueEvasivo(mipj.getNode(), e2);
+        evasivo.setEstadosFisicos(estadosFisicos);
+        e2.addControl(evasivo);
+        //Lo pintamos en otro color
+        e2.setMaterialCuerpo(negro);
+        e2.setMaterialcanon(amarillo);
+        //Lo añadimos a las estructuras correspondientes
+        enemigosNode.attachChild(e2.getNode());
+        enemigos.add(e2);
         
         
         
