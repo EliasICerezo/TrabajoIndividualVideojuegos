@@ -4,6 +4,8 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bounding.BoundingBox;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
@@ -18,6 +20,8 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
+import java.util.ArrayList;
+import java.util.Iterator;
 import modelo.TanqueBasico;
 
 /**
@@ -35,8 +39,9 @@ public class Main extends SimpleApplication {
     private Node mipersonaje;
     //Mi personaje
     private TanqueBasico mipj;
-    
-    
+    //Primer enemigo
+    private ArrayList<TanqueBasico> enemigos;
+    private TanqueBasico e1;
     
     
     public static void main(String[] args) {
@@ -54,6 +59,7 @@ public class Main extends SimpleApplication {
         world=new Node();
         mipersonaje=new Node();
         enemigosNode=new Node();
+        enemigos=new ArrayList<>();
         //pongo el cielo
         viewPort.setBackgroundColor(new ColorRGBA(0.7f, 0.8f, 1f, 1f));
         //asocio las fisicas al mapa 
@@ -87,11 +93,11 @@ public class Main extends SimpleApplication {
         fisicaSuelo.setRestitution(0.9f); //darndo rebote a fisicaSuelo} 
         
         //Mi tanque
-        mipj = new TanqueBasico("Tanque1", assetManager);
+        mipj = new TanqueBasico("Tanque1", assetManager,mipersonaje);
         
         
         //Primer enemigo
-        TanqueBasico e1=new TanqueBasico("Enemigo1",assetManager);
+        e1=new TanqueBasico("Enemigo1",assetManager,enemigosNode);
         
         e1.setMaterialCuerpo(verde);
         e1.setMaterialcanon(negro);
@@ -105,7 +111,7 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(mipersonaje);
         rootNode.attachChild(world);
         rootNode.attachChild(enemigosNode);
-        
+        mipj.setEnemigos(enemigosNode);
     }
 
     @Override
@@ -115,9 +121,17 @@ public class Main extends SimpleApplication {
         
        
         actualizacamara();
+        
        
     }
-
+    /**
+     * Este metodo lo qye hace es detectar la colision de mis balas con las del resto de los tanques
+     */
+    
+    
+   
+    
+    
     private void actualizacamara() {
         cam.setLocation(mipj.getCamara());
         Vector3f canon=mipj.getApuntado();

@@ -5,39 +5,61 @@
  */
 package control;
 
+import com.jme3.bounding.BoundingSphere;
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
  * @author elias
  */
 public class ControlBala extends AbstractControl {
+
     private Geometry bala;
-    private Node rootNode;
-    private float time=0;
-    public ControlBala(Geometry bala, Node rootNode) {
+    private Node balasNode;
+    private Node enemigosNode;
+    private float time = 0;
+    private BoundingSphere contorno;
+
+    public ControlBala(Geometry bala, Node rootNode,Node enemigosNode,BoundingSphere bs) {
         this.bala = bala;
-        this.rootNode = rootNode;
+        this.balasNode = rootNode;
+        this.enemigosNode = enemigosNode;
+        this.contorno = bs;
     }
-    
-    
+
     @Override
     protected void controlUpdate(float tpf) {
-        time+=tpf;
-        
-        if(time>5){
-            rootNode.detachChild(bala);
+        if (bala != null) {
+            contorno.setCenter(bala.getWorldTranslation());
+            time += tpf;
+            //Aqui detectamos la s colisiones
+            CollisionResults results = new CollisionResults();
+            enemigosNode.collideWith(contorno, results);
+            Iterator <CollisionResult> iter=results.iterator();
+            while(iter.hasNext()){
+                System.out.println("Colision con :"+iter.next().getGeometry().getName());
+            }
+
+            if (time > 5) {
+
+                balasNode.detachChild(bala);
+                bala = null;
+
+            }
         }
-        
     }
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-        
+
     }
-    
+
 }
