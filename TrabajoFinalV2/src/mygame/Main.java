@@ -20,6 +20,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
+import control.ControlTorreta;
 import java.util.ArrayList;
 import java.util.Iterator;
 import modelo.Tanque;
@@ -99,6 +100,10 @@ public class Main extends SimpleApplication {
         
         //Primer enemigo
         e1=new TanqueBasico("Enemigo1",assetManager,enemigosNode);
+        e1.getNode().move(0,0,-10);
+        ControlTorreta controlTorreta=new ControlTorreta(mipj.getNode(), e1);
+        controlTorreta.setEstadosFisicos(estadosFisicos);
+        e1.addControl(controlTorreta);
         
         e1.setMaterialCuerpo(verde);
         e1.setMaterialcanon(negro);

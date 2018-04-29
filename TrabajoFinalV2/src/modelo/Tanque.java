@@ -10,6 +10,7 @@ import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.control.AbstractControl;
 import java.util.ArrayList;
 
 /**
@@ -37,5 +38,9 @@ public interface Tanque {
     void setMaterialCuerpo(Material materialCuerpo);
 
     void setMaterialcanon(Material materialcanon);
+    
+    void addControl(AbstractControl control);
+    
+    Geometry getCuerpo();
     
 }

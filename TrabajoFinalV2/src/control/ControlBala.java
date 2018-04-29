@@ -30,15 +30,15 @@ public class ControlBala extends AbstractControl {
     private float time = 0;
     private BoundingSphere contorno;
     private ArrayList<Tanque> listaEnemigos;
-    
-    private boolean colision=false;
 
-    public ControlBala(Geometry bala, Node rootNode,Node enemigosNode,BoundingSphere bs,ArrayList<Tanque> listaEnemigos) {
+    private boolean colision = false;
+
+    public ControlBala(Geometry bala, Node rootNode, Node enemigosNode, BoundingSphere bs, ArrayList<Tanque> listaEnemigos) {
         this.bala = bala;
         this.balasNode = rootNode;
         this.enemigosNode = enemigosNode;
         this.contorno = bs;
-        this.listaEnemigos=listaEnemigos;
+        this.listaEnemigos = listaEnemigos;
     }
 
     @Override
@@ -48,25 +48,27 @@ public class ControlBala extends AbstractControl {
             time += tpf;
             //Aqui detectamos la s colisiones
             CollisionResults results = new CollisionResults();
-            enemigosNode.collideWith(contorno, results);
-            Iterator <CollisionResult> iter=results.iterator();
-            while(iter.hasNext()){
-                CollisionResult next=iter.next();
-                System.out.println("Colision con :"+next.getGeometry().getName());
-                
-                colision=true;
-                
-                for(Tanque t: listaEnemigos ){
-                    t.eliminaTanque(next.getGeometry());
+            if (enemigosNode != null) {
+                enemigosNode.collideWith(contorno, results);
+                Iterator<CollisionResult> iter = results.iterator();
+                while (iter.hasNext()) {
+                    CollisionResult next = iter.next();
+                    System.out.println("Colision con :" + next.getGeometry().getName());
+
+                    colision = true;
+
+                    for (Tanque t : listaEnemigos) {
+                        t.eliminaTanque(next.getGeometry());
+                    }
+
                 }
-        
-            }
 
-            if (time > 5 || colision) {
+                if (time > 5 || colision) {
 
-                balasNode.detachChild(bala);
-                bala = null;
+                    balasNode.detachChild(bala);
+                    bala = null;
 
+                }
             }
         }
     }

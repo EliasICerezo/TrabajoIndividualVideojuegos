@@ -16,6 +16,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.control.AbstractControl;
 import com.jme3.scene.shape.Box;
 import com.jme3.scene.shape.Cylinder;
 import com.jme3.scene.shape.Sphere;
@@ -62,11 +63,6 @@ public class TanqueBasico  implements Tanque {
         cuerpog = new Geometry("cuerpo" + name, cuerpo);
         cuerpog.setMaterial(materialCuerpo);
         cuerpog.move(0, 1.1f, 0);
-        
-        //Le poongo bound al cuertpo
-//        BoundingBox cuerpoBound = new BoundingBox();
-//        cuerpo.setBound(cuerpoBound);
-//        cuerpo.updateBound();
 
         materialcanon = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         materialcanon.setColor("Color", ColorRGBA.Blue);
@@ -84,6 +80,9 @@ public class TanqueBasico  implements Tanque {
         
         tanque.attachChild(canong);
         tanque.attachChild(cuerpog);
+        
+        
+        //generaCubosparaRayos();
     }
 
     @Override
@@ -108,11 +107,6 @@ public class TanqueBasico  implements Tanque {
         balasGeometry.add(balag);
         esferabound.setCenter(balag.getWorldTranslation());
         
-        //Le pongo un bound a la bala
-        
-        
-        
-        
         //Fisicas
         RigidBodyControl fisicaBalas = new RigidBodyControl(1);
         balag.addControl(fisicaBalas);
@@ -123,11 +117,8 @@ public class TanqueBasico  implements Tanque {
         ControlBala cb=new ControlBala(balag, tanque,enemigosNode,esferabound,listaEnemigos);
         balag.addControl(cb);
         
-        //le pongo su bound
-//        BoundingSphere esfera= new BoundingSphere();
-//        bala.setBound(esfera);
-//        bala.updateBound();
-       
+
+
         
         Vector3f direccion= tanque.getWorldRotation().getRotationColumn(2).normalize().mult(new Vector3f(50, 5, 50)); //new Vector3f(componente.x, 0, componente.z);
         
@@ -193,9 +184,82 @@ public class TanqueBasico  implements Tanque {
     public void setListaEnemigos(ArrayList<Tanque> list){
         listaEnemigos=list;
     }
+    
+    private void generaCubosparaRayos(){
+        Material materialrayos=new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        materialrayos.setColor("Color", ColorRGBA.BlackNoAlpha);
+        
+        Box b1=new Box(0.1f,0.1f,0.1f);
+        Box b2=new Box(0.1f,0.1f,0.1f);
+        Box b3=new Box(0.1f,0.1f,0.1f);
+        Box b4=new Box(0.1f,0.1f,0.1f);
+        Box b5=new Box(0.1f,0.1f,0.1f);
+        Box b6=new Box(0.1f,0.1f,0.1f);
+        Box b7=new Box(0.1f,0.1f,0.1f);
+        Box b8=new Box(0.1f,0.1f,0.1f);
+        
+        ArrayList<Geometry> geometrias=new ArrayList<>();
+        
+        Geometry g=new Geometry("r1", b1);
+        g.setMaterial(materialrayos);
+        g.move(2, 1, 0);
+        geometrias.add(g);
+        
+        g=new Geometry("r2",b2);
+        g.setMaterial(materialrayos);
+        g.move(0, 1, 2);
+        geometrias.add(g);
+        
+        g=new Geometry("r3",b3);
+        g.setMaterial(materialrayos);
+        g.move(0, 1, -2);
+        geometrias.add(g);
+        
+        g=new Geometry("r4",b4);
+        g.setMaterial(materialrayos);
+        g.move(-2, 1, 0);
+        geometrias.add(g);
+        
+        g=new Geometry("r5",b5);
+        g.setMaterial(materialrayos);
+        g.move(2, 1, 2);
+        geometrias.add(g);
+        
+        g=new Geometry("r6",b6);
+        g.setMaterial(materialrayos);
+        g.move(2, 1, -2);
+        geometrias.add(g);
+        
+        g=new Geometry("r7",b7);
+        g.setMaterial(materialrayos);
+        g.move(-2, 1, 2);
+        geometrias.add(g);
+        
+        g=new Geometry("r8",b8);
+        g.setMaterial(materialrayos);
+        g.move(-2, 1, -2);
+        geometrias.add(g);
+        
+        for(Geometry gf: geometrias){
+            tanque.attachChild(gf);
+        }
+        
+    }
+
+    @Override
+    public void addControl(AbstractControl control) {
+        tanque.addControl(control);
+    }
+    
+    @Override
+    public Geometry getCuerpo(){
+        return cuerpog;
+    }
+    
+    public void setApuntado(Vector3f apuntado){
+        
+    }
             
-    
-    
     
     
     
