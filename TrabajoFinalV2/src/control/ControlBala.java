@@ -15,6 +15,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import java.util.ArrayList;
 import java.util.Iterator;
+import modelo.Tanque;
 import modelo.TanqueBasico;
 
 /**
@@ -28,11 +29,11 @@ public class ControlBala extends AbstractControl {
     private Node enemigosNode;
     private float time = 0;
     private BoundingSphere contorno;
-    private ArrayList<TanqueBasico> listaEnemigos;
+    private ArrayList<Tanque> listaEnemigos;
     
     private boolean colision=false;
 
-    public ControlBala(Geometry bala, Node rootNode,Node enemigosNode,BoundingSphere bs,ArrayList<TanqueBasico> listaEnemigos) {
+    public ControlBala(Geometry bala, Node rootNode,Node enemigosNode,BoundingSphere bs,ArrayList<Tanque> listaEnemigos) {
         this.bala = bala;
         this.balasNode = rootNode;
         this.enemigosNode = enemigosNode;
@@ -55,14 +56,10 @@ public class ControlBala extends AbstractControl {
                 
                 colision=true;
                 
-                
-                for(TanqueBasico t: listaEnemigos ){
+                for(Tanque t: listaEnemigos ){
                     t.eliminaTanque(next.getGeometry());
                 }
-                
-                
-                
-                
+        
             }
 
             if (time > 5 || colision) {

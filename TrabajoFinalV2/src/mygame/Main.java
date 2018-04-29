@@ -22,6 +22,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import java.util.ArrayList;
 import java.util.Iterator;
+import modelo.Tanque;
 import modelo.TanqueBasico;
 
 /**
@@ -40,7 +41,7 @@ public class Main extends SimpleApplication {
     //Mi personaje
     private TanqueBasico mipj;
     //Primer enemigo
-    private ArrayList<TanqueBasico> enemigos;
+    private ArrayList<Tanque> enemigos;
     private TanqueBasico e1;
     
     
@@ -127,13 +128,6 @@ public class Main extends SimpleApplication {
         
        
     }
-    /**
-     * Este metodo lo qye hace es detectar la colision de mis balas con las del resto de los tanques
-     */
-    
-    
-   
-    
     
     private void actualizacamara() {
         cam.setLocation(mipj.getCamara());

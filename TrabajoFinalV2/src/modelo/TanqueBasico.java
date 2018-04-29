@@ -26,7 +26,7 @@ import java.util.ArrayList;
  *
  * @author elias
  */
-public class TanqueBasico {
+public class TanqueBasico  implements Tanque {
 
     private Node tanque,camara;//El nodo donde esta todo
     private Material materialCuerpo;
@@ -38,14 +38,14 @@ public class TanqueBasico {
     private Material materialcanon;
     private Geometry cuerpog;
     private Node enemigosNode;
-    private ArrayList<TanqueBasico> listaEnemigos;
+    private ArrayList<Tanque> listaEnemigos;
     private Node miPadre; //Darth Vader
     
     
     //Necesito tener el cañon para generar las balas delante
     private Geometry canong;
 
-    public TanqueBasico(String name, AssetManager assetManager, Node padre) {
+    public TanqueBasico(String name, AssetManager assetManager, Node padre)  {
         tanque = new Node();
         rigidbalas = new ArrayList<>();
         balasGeometry = new ArrayList<>();
@@ -86,10 +86,12 @@ public class TanqueBasico {
         tanque.attachChild(cuerpog);
     }
 
+    @Override
     public Node getNode() {
         return tanque;
     }
 
+    @Override
     public void dispara(BulletAppState estadosFisicos) {
         Material materialbala = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         materialbala.setColor("Color", ColorRGBA.Black);
@@ -143,30 +145,36 @@ public class TanqueBasico {
     }
     
     
+    @Override
     public Vector3f getApuntado(){
         return tanque.getWorldTranslation();
     }
     
+    @Override
     public Vector3f getCamara(){
         Vector3f camv=new Vector3f(camara.getWorldTranslation().x,5,camara.getWorldTranslation().z);
         return camv;
     }
 
+    @Override
     public void setMaterialCuerpo(Material materialCuerpo) {
         this.materialCuerpo = materialCuerpo;
         cuerpog.setMaterial(materialCuerpo);
     }
 
+    @Override
     public void setMaterialcanon(Material materialcanon) {
         this.materialcanon = materialcanon;
         canong.setMaterial(materialcanon);
     }
     
     
+    @Override
     public ArrayList<Geometry> getGeomBalas(){
         return balasGeometry;
     }
     
+    @Override
     public void eliminaTanque(Geometry g){
         if(g.equals(cuerpog)){
             miPadre.detachChild(tanque);
@@ -176,11 +184,13 @@ public class TanqueBasico {
 
     }
     
+    @Override
     public void setEnemigos(Node e){
         enemigosNode=e;
     }
     
-    public void setListaEnemigos(ArrayList<TanqueBasico> list){
+    @Override
+    public void setListaEnemigos(ArrayList<Tanque> list){
         listaEnemigos=list;
     }
             
