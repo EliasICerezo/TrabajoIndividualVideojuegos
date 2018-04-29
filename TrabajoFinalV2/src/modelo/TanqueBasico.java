@@ -38,7 +38,7 @@ public class TanqueBasico {
     private Material materialcanon;
     private Geometry cuerpog;
     private Node enemigosNode;
-    
+    private ArrayList<TanqueBasico> listaEnemigos;
     private Node miPadre; //Darth Vader
     
     
@@ -52,6 +52,8 @@ public class TanqueBasico {
         this.name = name;
         this.assetManager = assetManager;
         this.miPadre=padre;
+        //inicializo la lista de enemigos como una lista vacia
+        listaEnemigos=new ArrayList<>();
 
         materialCuerpo = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         materialCuerpo.setColor("Color", ColorRGBA.Red);
@@ -116,7 +118,7 @@ public class TanqueBasico {
         fisicaBalas.setRestitution(0.9f);
         
         //Le añado el control
-        ControlBala cb=new ControlBala(balag, tanque,enemigosNode,esferabound);
+        ControlBala cb=new ControlBala(balag, tanque,enemigosNode,esferabound,listaEnemigos);
         balag.addControl(cb);
         
         //le pongo su bound
@@ -178,7 +180,10 @@ public class TanqueBasico {
         enemigosNode=e;
     }
     
-    
+    public void setListaEnemigos(ArrayList<TanqueBasico> list){
+        listaEnemigos=list;
+    }
+            
     
     
     

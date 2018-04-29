@@ -104,6 +104,8 @@ public class Main extends SimpleApplication {
         
         
         enemigosNode.attachChild(e1.getNode());
+        enemigos.add(e1);
+        
         
         mipersonaje.attachChild(mipj.getNode());
         world.attachChild(suelog);
@@ -112,6 +114,7 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(world);
         rootNode.attachChild(enemigosNode);
         mipj.setEnemigos(enemigosNode);
+        mipj.setListaEnemigos(enemigos);
     }
 
     @Override
