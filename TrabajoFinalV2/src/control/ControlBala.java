@@ -30,6 +30,7 @@ public class ControlBala extends AbstractControl {
     private float time = 0;
     private BoundingSphere contorno;
     private ArrayList<Tanque> listaEnemigos;
+    private TanqueSinComportamiento tanquejugador;
 
     private boolean colision = false;
 
@@ -39,6 +40,7 @@ public class ControlBala extends AbstractControl {
         this.enemigosNode = enemigosNode;
         this.contorno = bs;
         this.listaEnemigos = listaEnemigos;
+        
     }
 
     @Override
@@ -53,7 +55,7 @@ public class ControlBala extends AbstractControl {
                 Iterator<CollisionResult> iter = results.iterator();
                 while (iter.hasNext()) {
                     CollisionResult next = iter.next();
-                    //System.out.println("Colision con :" + next.getGeometry().getName());
+                    
 
                     colision = true;
 
@@ -70,9 +72,35 @@ public class ControlBala extends AbstractControl {
 
                 }
             }
+            
+            if(tanquejugador!=null){
+                tanquejugador.getNode().collideWith(contorno, results);
+                Iterator<CollisionResult> iter = results.iterator();
+                while (iter.hasNext()) {
+                    CollisionResult next = iter.next();
+                    
+
+                    colision = true;
+
+                    tanquejugador.eliminaTanque(next.getGeometry());
+
+                }
+
+                if (time > 5 || colision) {
+
+                    balasNode.detachChild(bala);
+                    bala = null;
+
+                }
+            }
+            
         }
     }
-
+    
+    public void setTanqueJugador(TanqueSinComportamiento t){
+        tanquejugador=t;
+    }
+    
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
 

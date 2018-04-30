@@ -44,4 +44,6 @@ public interface Tanque {
     Geometry getCuerpo();
     
     Vector3f getEspiral();
+    
+    void setTanqueJugador(TanqueSinComportamiento t);
 }

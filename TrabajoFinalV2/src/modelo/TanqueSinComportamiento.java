@@ -40,7 +40,7 @@ public class TanqueSinComportamiento implements Tanque {
     private Node enemigosNode;
     private ArrayList<Tanque> listaEnemigos;
     private Node miPadre; //Darth Vader
-
+    private TanqueSinComportamiento tanquejugador;
     //Necesito tener el cañon para generar las balas delante
     private Geometry canong;
 
@@ -119,6 +119,9 @@ public class TanqueSinComportamiento implements Tanque {
 
         //Le añado el control
         ControlBala cb = new ControlBala(balag, tanque, enemigosNode, esferabound, listaEnemigos);
+        if(tanquejugador!=null){
+            cb.setTanqueJugador(tanquejugador);
+        }
         balag.addControl(cb);
 
         Vector3f direccion = tanque.getWorldRotation().getRotationColumn(2).normalize().mult(new Vector3f(50, 5, 50)); //new Vector3f(componente.x, 0, componente.z);
@@ -254,7 +257,10 @@ public class TanqueSinComportamiento implements Tanque {
     public Vector3f getEspiral(){
         return new Vector3f(geomEspiral.getWorldTranslation().x-cuerpog.getWorldTranslation().x, 0, geomEspiral.getWorldTranslation().z-cuerpog.getWorldTranslation().z);
     }
-
     
+    @Override
+    public void setTanqueJugador(TanqueSinComportamiento t){
+        tanquejugador=t;
+    }
 
 }

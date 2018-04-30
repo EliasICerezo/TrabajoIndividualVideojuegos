@@ -32,8 +32,8 @@ public class ControlTanqueEvasivo extends ControlTorreta{
                 CollisionResult next=iter.next();
                 Vector3f direccion = new Vector3f(next.getGeometry().getWorldTranslation().x, 0, next.getGeometry().getWorldTranslation().z);
                 mitanque.getNode().lookAt(direccion, Vector3f.UNIT_Y);
-                cuerdahuida(tpf);
-               
+                cuerdahuida(tpf,next.getDistance());
+                
                 
                 
                 if(tiempodisparo>2){
@@ -44,10 +44,12 @@ public class ControlTanqueEvasivo extends ControlTorreta{
             }
     }
 
-    private void cuerdahuida(float tpf) {
+    private void cuerdahuida(float tpf,float distancia) {
         Vector3f direccion= mitanque.getNode().getWorldTranslation().subtract(tanquejugador.getWorldTranslation());
-        
-        mitanque.getNode().move(direccion.mult(0.1f*tpf));
+        if(distancia < 50){
+            
+            mitanque.getNode().move(direccion.mult(0.2f*tpf));
+        }
     }
     
 }

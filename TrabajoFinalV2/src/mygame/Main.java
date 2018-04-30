@@ -36,7 +36,10 @@ import modelo.TanqueSinComportamiento;
  * @author normenhansen
  */
 public class Main extends SimpleApplication {
-
+    
+    //LOS TANQUES ME PUEDEN MATAR
+    private boolean matar=true;
+    
     private BulletAppState estadosFisicos;
     private RigidBodyControl fisicaSuelo;
     private Node world;
@@ -47,6 +50,7 @@ public class Main extends SimpleApplication {
     //Primer enemigo
     private ArrayList<Tanque> enemigos;
     private TanqueSinComportamiento e1,e2,e3,e4;
+    
     
     
     public static void main(String[] args) {
@@ -88,6 +92,7 @@ public class Main extends SimpleApplication {
         amarillo.setColor("Color", ColorRGBA.Yellow);
         Material cyan = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
         cyan.setColor("Color", ColorRGBA.Cyan);
+       
         
         //Suelo
         Box b = new Box(10000, 0.1f, 10000);
@@ -101,53 +106,66 @@ public class Main extends SimpleApplication {
         fisicaSuelo.setRestitution(0.9f); //darndo rebote a fisicaSuelo} 
         
         //Mi tanque
-       mipj = new TanqueSinComportamiento("Tanque1", assetManager,mipersonaje);
+        mipj = new TanqueSinComportamiento("Tanque1", assetManager,mipersonaje);
         
-//        
-//        //Primer enemigo
-//        e1=new TanqueSinComportamiento("Torreta",assetManager,enemigosNode);
-//        e1.getNode().move(0,0,-40);
-//        //Asignamos el control correspondiente a este enemigo
-//        ControlTorreta controlTorreta=new ControlTorreta(mipj.getNode(), e1);
-//        controlTorreta.setEstadosFisicos(estadosFisicos);
-//        e1.addControl(controlTorreta);
-//        //Lo pintamos de otro color
-//        e1.setMaterialCuerpo(verde);
-//        e1.setMaterialcanon(negro);
-//        //Lo añadimos a las estructuras correspondientes
-//        enemigosNode.attachChild(e1.getNode());
-//        enemigos.add(e1);
-//        
-//        
-//        //SegundoEnemigo en este caso va a ser un tanque que nos va a perseguir y cuando se acerque nos disparara
-//        e2=new TanqueSinComportamiento("TanquePerseguidor", assetManager, enemigosNode);
-//        e2.getNode().move(40, 0, 40);
-//        //Aqui ira el control
-//        ControlTanquePerseguidor perseguidor=new ControlTanquePerseguidor(mipj.getNode(), e2);
-//        perseguidor.setEstadosFisicos(estadosFisicos);
-//        e2.addControl(perseguidor);
-//        //Lo pintamos en otro color
-//        e2.setMaterialCuerpo(amarillo);
-//        e2.setMaterialcanon(negro);
-//        //Lo añadimos a las estructuras correspondientes
-//        enemigosNode.attachChild(e2.getNode());
-//        enemigos.add(e2);
-//       
-//        
-//        e3=new TanqueSinComportamiento("TanqueEvasivo", assetManager, enemigosNode);
-//        e3.getNode().move(-40, 0, 40);
-//        //Aqui ira el control
-//        ControlTanqueEvasivo evasivo=new ControlTanqueEvasivo(mipj.getNode(), e3);
-//        evasivo.setEstadosFisicos(estadosFisicos);
-//        e3.addControl(evasivo);
-//        //Lo pintamos en otro color
-//        e3.setMaterialCuerpo(negro);
-//        e3.setMaterialcanon(amarillo);
-//        //Lo añadimos a las estructuras correspondientes
-//        enemigosNode.attachChild(e3.getNode());
-//        enemigos.add(e3);
-//        
+        
+        //Primer enemigo
+        e1=new TanqueSinComportamiento("Torreta",assetManager,enemigosNode);
+        if(matar){
+            e1.setTanqueJugador(mipj);
+        }
+        e1.getNode().move(0,0,-40);
+        //Asignamos el control correspondiente a este enemigo
+        ControlTorreta controlTorreta=new ControlTorreta(mipj.getNode(), e1);
+        controlTorreta.setEstadosFisicos(estadosFisicos);
+        e1.addControl(controlTorreta);
+        //Lo pintamos de otro color
+        e1.setMaterialCuerpo(verde);
+        e1.setMaterialcanon(negro);
+        //Lo añadimos a las estructuras correspondientes
+        enemigosNode.attachChild(e1.getNode());
+        enemigos.add(e1);
+        
+        
+        //SegundoEnemigo en este caso va a ser un tanque que nos va a perseguir y cuando se acerque nos disparara
+        e2=new TanqueSinComportamiento("TanquePerseguidor", assetManager, enemigosNode);
+        if(matar){
+            e2.setTanqueJugador(mipj);
+        }
+        e2.getNode().move(40, 0, 40);
+        //Aqui ira el control
+        ControlTanquePerseguidor perseguidor=new ControlTanquePerseguidor(mipj.getNode(), e2);
+        perseguidor.setEstadosFisicos(estadosFisicos);
+        e2.addControl(perseguidor);
+        //Lo pintamos en otro color
+        e2.setMaterialCuerpo(amarillo);
+        e2.setMaterialcanon(negro);
+        //Lo añadimos a las estructuras correspondientes
+        enemigosNode.attachChild(e2.getNode());
+        enemigos.add(e2);
+       
+        //TanqueEvasivo
+        e3=new TanqueSinComportamiento("TanqueEvasivo", assetManager, enemigosNode);
+        if(matar){
+            e3.setTanqueJugador(mipj);
+        }
+        e3.getNode().move(-40, 0, 40);
+        //Aqui ira el control
+        ControlTanqueEvasivo evasivo=new ControlTanqueEvasivo(mipj.getNode(), e3);
+        evasivo.setEstadosFisicos(estadosFisicos);
+        e3.addControl(evasivo);
+        //Lo pintamos en otro color
+        e3.setMaterialCuerpo(negro);
+        e3.setMaterialcanon(amarillo);
+        //Lo añadimos a las estructuras correspondientes
+        enemigosNode.attachChild(e3.getNode());
+        enemigos.add(e3);
+        
+        //Tanque buscador
         e4=new TanqueSinComportamiento("TanqueBuscador", assetManager, enemigosNode);
+        if(matar){
+            e4.setTanqueJugador(mipj);
+        }
         e4.getNode().move(78, 0, 100);
         //Aqui ira el control
         ControlTanqueBuscador buscador=new ControlTanqueBuscador(mipj.getNode(), e4);
