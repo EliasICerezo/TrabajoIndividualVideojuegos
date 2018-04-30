@@ -16,3 +16,11 @@ Siguen el mismo principio que los Perseguidores pero al contrario, ellos te
 rehuyen, tanto a ti como a las balas que lleguen a detectar los rayos
 (no detectan todas las balas ya que estas tienen fisicas y los rayos se lanzan
 a un metro del suelo).
+
+
+-Tanques con exploracion
+Para estos tanques vamos a realizar un movimiento conocido como la espiral
+de arquimedes, que la vamos a calcular de forma relativa a la posicion del tanque
+con esto lo que conseguimos es que el tanque vaya explorando el mapa de forma
+uniforme, y en el momento en que nos encuentra con los rayos nos persigue y
+nos dispara

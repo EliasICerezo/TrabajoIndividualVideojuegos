@@ -44,6 +44,9 @@ public class TanqueSinComportamiento implements Tanque {
     //Necesito tener el cañon para generar las balas delante
     private Geometry canong;
 
+    //Para gfeneral la espiral
+    private Geometry geomEspiral;
+    
     /**
      * Con este constructor generamos un tanque compuesto por un box a modo de cuerpo y un cilindro a modo de cañon, no lleva comportamiento asociado
      * y tiene todos los metodos que se necesitan para hacer que el tanque funcione
@@ -84,7 +87,7 @@ public class TanqueSinComportamiento implements Tanque {
         tanque.attachChild(canong);
         tanque.attachChild(cuerpog);
 
-        //generaCubosparaRayos();
+        generaCubosparaRayos();
     }
 
     @Override
@@ -159,7 +162,7 @@ public class TanqueSinComportamiento implements Tanque {
 
     @Override
     public void eliminaTanque(Geometry g) {
-        if (g.equals(cuerpog)) {
+        if (g.equals(cuerpog)|| g.equals(canong)) {
             miPadre.detachChild(tanque);
 
         }
@@ -178,58 +181,58 @@ public class TanqueSinComportamiento implements Tanque {
 
     private void generaCubosparaRayos() {
         Material materialrayos = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-        materialrayos.setColor("Color", ColorRGBA.BlackNoAlpha);
+        materialrayos.setColor("Color", ColorRGBA.White);
 
-        Box b1 = new Box(0.1f, 0.1f, 0.1f);
-        Box b2 = new Box(0.1f, 0.1f, 0.1f);
-        Box b3 = new Box(0.1f, 0.1f, 0.1f);
-        Box b4 = new Box(0.1f, 0.1f, 0.1f);
-        Box b5 = new Box(0.1f, 0.1f, 0.1f);
-        Box b6 = new Box(0.1f, 0.1f, 0.1f);
-        Box b7 = new Box(0.1f, 0.1f, 0.1f);
-        Box b8 = new Box(0.1f, 0.1f, 0.1f);
+//        Box b1 = new Box(0.1f, 0.1f, 0.1f);
+        Box b2 = new Box(0.001f, 0.001f, 0.001f);
+//        Box b3 = new Box(0.1f, 0.1f, 0.1f);
+//        Box b4 = new Box(0.1f, 0.1f, 0.1f);
+//        Box b5 = new Box(0.1f, 0.1f, 0.1f);
+//        Box b6 = new Box(0.1f, 0.1f, 0.1f);
+//        Box b7 = new Box(0.1f, 0.1f, 0.1f);
+//        Box b8 = new Box(0.1f, 0.1f, 0.1f);
 
         ArrayList<Geometry> geometrias = new ArrayList<>();
 
-        Geometry g = new Geometry("r1", b1);
-        g.setMaterial(materialrayos);
-        g.move(2, 1, 0);
-        geometrias.add(g);
+         //Geometry g= new Geometry("r1", b1);
+//        g.setMaterial(materialrayos);
+//        g.move(2, 1, 0);
+//        geometrias.add(g);
 
-        g = new Geometry("r2", b2);
-        g.setMaterial(materialrayos);
-        g.move(0, 1, 2);
-        geometrias.add(g);
+        geomEspiral = new Geometry("r2", b2);
+        geomEspiral.setMaterial(materialrayos);
+        geomEspiral.move(0, 1, 2);
+        geometrias.add(geomEspiral);
 
-        g = new Geometry("r3", b3);
-        g.setMaterial(materialrayos);
-        g.move(0, 1, -2);
-        geometrias.add(g);
-
-        g = new Geometry("r4", b4);
-        g.setMaterial(materialrayos);
-        g.move(-2, 1, 0);
-        geometrias.add(g);
-
-        g = new Geometry("r5", b5);
-        g.setMaterial(materialrayos);
-        g.move(2, 1, 2);
-        geometrias.add(g);
-
-        g = new Geometry("r6", b6);
-        g.setMaterial(materialrayos);
-        g.move(2, 1, -2);
-        geometrias.add(g);
-
-        g = new Geometry("r7", b7);
-        g.setMaterial(materialrayos);
-        g.move(-2, 1, 2);
-        geometrias.add(g);
-
-        g = new Geometry("r8", b8);
-        g.setMaterial(materialrayos);
-        g.move(-2, 1, -2);
-        geometrias.add(g);
+//        g = new Geometry("r3", b3);
+//        g.setMaterial(materialrayos);
+//        g.move(0, 1, -2);
+//        geometrias.add(g);
+//
+//        g = new Geometry("r4", b4);
+//        g.setMaterial(materialrayos);
+//        g.move(-2, 1, 0);
+//        geometrias.add(g);
+//
+//        g = new Geometry("r5", b5);
+//        g.setMaterial(materialrayos);
+//        g.move(2, 1, 2);
+//        geometrias.add(g);
+//
+//        g = new Geometry("r6", b6);
+//        g.setMaterial(materialrayos);
+//        g.move(2, 1, -2);
+//        geometrias.add(g);
+//
+//        g = new Geometry("r7", b7);
+//        g.setMaterial(materialrayos);
+//        g.move(-2, 1, 2);
+//        geometrias.add(g);
+//
+//        g = new Geometry("r8", b8);
+//        g.setMaterial(materialrayos);
+//        g.move(-2, 1, -2);
+//        geometrias.add(g);
 
         for (Geometry gf : geometrias) {
             tanque.attachChild(gf);
@@ -246,9 +249,12 @@ public class TanqueSinComportamiento implements Tanque {
     public Geometry getCuerpo() {
         return cuerpog;
     }
-
-    public void setApuntado(Vector3f apuntado) {
-
+    
+    @Override
+    public Vector3f getEspiral(){
+        return new Vector3f(geomEspiral.getWorldTranslation().x-cuerpog.getWorldTranslation().x, 0, geomEspiral.getWorldTranslation().z-cuerpog.getWorldTranslation().z);
     }
+
+    
 
 }

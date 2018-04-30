@@ -43,4 +43,5 @@ public interface Tanque {
     
     Geometry getCuerpo();
     
+    Vector3f getEspiral();
 }

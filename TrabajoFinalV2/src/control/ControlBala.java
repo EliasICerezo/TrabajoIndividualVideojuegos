@@ -53,7 +53,7 @@ public class ControlBala extends AbstractControl {
                 Iterator<CollisionResult> iter = results.iterator();
                 while (iter.hasNext()) {
                     CollisionResult next = iter.next();
-                    System.out.println("Colision con :" + next.getGeometry().getName());
+                    //System.out.println("Colision con :" + next.getGeometry().getName());
 
                     colision = true;
 
