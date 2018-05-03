@@ -31,7 +31,7 @@ public class ControlTanqueBuscador extends ControlTorreta{
         
         Vector3f espiral=mitanque.getEspiral().mult(10);
        
-        mitanque.getNode().move(espiral.mult(2*tpf));
+        mitanque.getNode().move(espiral.mult(tpf));
         
         CollisionResults results=lanzarayos();
         //Aqui apuntamos y disparamos en caso de encontrar una colision con los rayos
